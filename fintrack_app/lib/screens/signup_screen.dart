@@ -7,46 +7,63 @@ import '../widgets/glass_textfield.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/social_button.dart';
 import 'home_screen.dart';
-import 'signup_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   // ── Controllers ──────────────────────────────────────────────────────────
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmController = TextEditingController();
 
   // ── Focus nodes ──────────────────────────────────────────────────────────
+  final _nameFocus = FocusNode();
   final _emailFocus = FocusNode();
   final _passwordFocus = FocusNode();
+  final _confirmFocus = FocusNode();
 
   // ── State ────────────────────────────────────────────────────────────────
   bool _isLoading = false;
-  bool _isGoogleLoading = false;
+  String? _nameError;
   String? _emailError;
   String? _passwordError;
-  String? _globalError;
+  String? _confirmError;
+  String? _globalError; // Firebase / network errors
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmController.dispose();
+    _nameFocus.dispose();
     _emailFocus.dispose();
     _passwordFocus.dispose();
+    _confirmFocus.dispose();
     super.dispose();
   }
 
   // ── Validation ───────────────────────────────────────────────────────────
 
   bool _validate() {
-    String? emailErr, passErr;
+    String? nameErr, emailErr, passErr, confirmErr;
+
+    final name = _nameController.text.trim();
     final email = _emailController.text.trim();
     final pass = _passwordController.text;
+    final confirm = _confirmController.text;
+
+    if (name.isEmpty) {
+      nameErr = 'Full name is required.';
+    } else if (name.length < 2) {
+      nameErr = 'Name must be at least 2 characters.';
+    }
 
     if (email.isEmpty) {
       emailErr = 'Email is required.';
@@ -56,20 +73,33 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (pass.isEmpty) {
       passErr = 'Password is required.';
+    } else if (pass.length < 6) {
+      passErr = 'Password must be at least 6 characters.';
+    }
+
+    if (confirm.isEmpty) {
+      confirmErr = 'Please confirm your password.';
+    } else if (confirm != pass) {
+      confirmErr = 'Passwords do not match.';
     }
 
     setState(() {
+      _nameError = nameErr;
       _emailError = emailErr;
       _passwordError = passErr;
+      _confirmError = confirmErr;
       _globalError = null;
     });
 
-    return emailErr == null && passErr == null;
+    return nameErr == null &&
+        emailErr == null &&
+        passErr == null &&
+        confirmErr == null;
   }
 
   // ── Actions ──────────────────────────────────────────────────────────────
 
-  Future<void> _onLogin() async {
+  Future<void> _onCreateAccount() async {
     if (!_validate()) return;
     FocusScope.of(context).unfocus();
     setState(() {
@@ -77,7 +107,8 @@ class _LoginScreenState extends State<LoginScreen> {
       _globalError = null;
     });
 
-    final result = await AuthService.instance.signInWithEmail(
+    final result = await AuthService.instance.signUpWithEmail(
+      name: _nameController.text.trim(),
       email: _emailController.text.trim(),
       password: _passwordController.text,
     );
@@ -95,17 +126,17 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<void> _onGoogleLogin() async {
+  Future<void> _onGoogleSignUp() async {
     FocusScope.of(context).unfocus();
     setState(() {
-      _isGoogleLoading = true;
+      _isLoading = true;
       _globalError = null;
     });
 
     final result = await AuthService.instance.signInWithGoogle();
 
     if (!mounted) return;
-    setState(() => _isGoogleLoading = false);
+    setState(() => _isLoading = false);
 
     if (result.isSuccess && result.user != null) {
       Navigator.of(context).pushAndRemoveUntil(
@@ -115,33 +146,6 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       setState(() => _globalError = result.errorMessage);
     }
-  }
-
-  Future<void> _onForgotPassword() async {
-    final email = _emailController.text.trim();
-    if (email.isEmpty) {
-      setState(() => _emailError = 'Enter your email above first.');
-      return;
-    }
-    final result =
-        await AuthService.instance.sendPasswordResetEmail(email);
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: result.isSuccess
-            ? AppColors.primaryEmerald
-            : AppColors.errorExpense,
-        content: Text(
-          result.isSuccess
-              ? 'Password reset email sent. Check your inbox.'
-              : result.errorMessage ?? 'Failed to send reset email.',
-          style: GoogleFonts.poppins(fontSize: 13, color: Colors.white),
-        ),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        margin: const EdgeInsets.all(16),
-      ),
-    );
   }
 
   // ── Build ────────────────────────────────────────────────────────────────
@@ -156,18 +160,12 @@ class _LoginScreenState extends State<LoginScreen> {
           Positioned(
             top: -60,
             right: -40,
-            child: _Blob(
-              size: 220,
-              color: AppColors.primaryEmerald.withOpacity(0.09),
-            ),
+            child: _Blob(size: 220, color: AppColors.primaryEmerald.withOpacity(0.09)),
           ),
           Positioned(
             bottom: 60,
             left: -60,
-            child: _Blob(
-              size: 180,
-              color: AppColors.primaryEmerald.withOpacity(0.06),
-            ),
+            child: _Blob(size: 180, color: AppColors.primaryEmerald.withOpacity(0.06)),
           ),
 
           // ── Content ─────────────────────────────────────────────────────
@@ -190,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Welcome Back 👋',
+                        'Create Account',
                         style: GoogleFonts.poppins(
                           fontSize: 28,
                           fontWeight: FontWeight.w800,
@@ -202,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Log in to continue your financial journey.',
+                        'Start your journey to smarter financial management.',
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           color: AppColors.textSecondary,
@@ -238,6 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Global error banner
                           if (_globalError != null) ...[
@@ -245,10 +244,27 @@ class _LoginScreenState extends State<LoginScreen> {
                             const SizedBox(height: 20),
                           ],
 
-                          // Email field
+                          // Full name
+                          GlassTextField(
+                            label: 'Full Name',
+                            hint: 'John Doe',
+                            prefixIcon: Icons.person_outline_rounded,
+                            controller: _nameController,
+                            focusNode: _nameFocus,
+                            errorText: _nameError,
+                            onChanged: (_) =>
+                                setState(() => _nameError = null),
+                            textInputAction: TextInputAction.next,
+                            onSubmitted: (_) =>
+                                FocusScope.of(context).requestFocus(_emailFocus),
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          // Email
                           GlassTextField(
                             label: 'Email Address',
-                            hint: 'umer@example.com',
+                            hint: 'you@example.com',
                             prefixIcon: Icons.mail_outline_rounded,
                             keyboardType: TextInputType.emailAddress,
                             controller: _emailController,
@@ -257,16 +273,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             onChanged: (_) =>
                                 setState(() => _emailError = null),
                             textInputAction: TextInputAction.next,
-                            onSubmitted: (_) => FocusScope.of(context)
-                                .requestFocus(_passwordFocus),
+                            onSubmitted: (_) =>
+                                FocusScope.of(context).requestFocus(_passwordFocus),
                           ),
 
                           const SizedBox(height: 20),
 
-                          // Password field
+                          // Password
                           GlassTextField(
                             label: 'Password',
-                            hint: '••••••••••••••',
+                            hint: '••••••••',
                             prefixIcon: Icons.lock_outline_rounded,
                             isPassword: true,
                             controller: _passwordController,
@@ -274,47 +290,36 @@ class _LoginScreenState extends State<LoginScreen> {
                             errorText: _passwordError,
                             onChanged: (_) =>
                                 setState(() => _passwordError = null),
+                            textInputAction: TextInputAction.next,
+                            onSubmitted: (_) =>
+                                FocusScope.of(context).requestFocus(_confirmFocus),
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          // Confirm password
+                          GlassTextField(
+                            label: 'Confirm Password',
+                            hint: '••••••••',
+                            prefixIcon: Icons.lock_outline_rounded,
+                            isPassword: true,
+                            controller: _confirmController,
+                            focusNode: _confirmFocus,
+                            errorText: _confirmError,
+                            onChanged: (_) =>
+                                setState(() => _confirmError = null),
                             textInputAction: TextInputAction.done,
-                            onSubmitted: (_) => _onLogin(),
+                            onSubmitted: (_) => _onCreateAccount(),
                           ),
 
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 28),
 
-                          // Forgot password
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: GestureDetector(
-                              onTap: _onForgotPassword,
-                              child: Text(
-                                'Forgot Password?',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.primaryEmerald,
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          const SizedBox(height: 24),
-
-                          // Login button + biometric row
-                          Row(
-                            children: [
-                              Expanded(
-                                child: PrimaryButton(
-                                  label: 'Login',
-                                  icon: Icons.arrow_forward_rounded,
-                                  isLoading: _isLoading,
-                                  onPressed:
-                                      (_isLoading || _isGoogleLoading)
-                                          ? null
-                                          : _onLogin,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              _BiometricButton(),
-                            ],
+                          // Create account button
+                          PrimaryButton(
+                            label: 'Create Account',
+                            icon: Icons.arrow_forward_rounded,
+                            isLoading: _isLoading,
+                            onPressed: _isLoading ? null : _onCreateAccount,
                           ),
 
                           const SizedBox(height: 24),
@@ -329,8 +334,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 14),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 14),
                                 child: Text(
                                   'or continue with',
                                   style: GoogleFonts.poppins(
@@ -350,30 +355,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           const SizedBox(height: 20),
 
-                          // Social buttons
-                          Row(
-                            children: [
-                              Expanded(
-                                child: SocialButton(
-                                  label: 'Apple',
-                                  icon: Icons.apple_rounded,
-                                  onPressed: () {}, // Apple auth — future
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: _isGoogleLoading
-                                    ? _GoogleLoadingButton()
-                                    : SocialButton(
-                                        label: 'Google',
-                                        iconWidget: const GoogleIcon(size: 22),
-                                        onPressed:
-                                            (_isLoading || _isGoogleLoading)
-                                                ? null
-                                                : _onGoogleLogin,
-                                      ),
-                              ),
-                            ],
+                          // Google button (full-width)
+                          SocialButton(
+                            label: 'Continue with Google',
+                            iconWidget: const GoogleIcon(size: 22),
+                            onPressed: _isLoading ? null : _onGoogleSignUp,
                           ),
                         ],
                       ),
@@ -381,25 +367,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     const SizedBox(height: 28),
 
-                    // Sign up link
+                    // Log in link
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Don't have an account?  ",
+                          'Already have an account?  ',
                           style: GoogleFonts.poppins(
                             fontSize: 14,
                             color: AppColors.textSecondary,
                           ),
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => const SignupScreen(),
-                            ),
-                          ),
+                          onTap: () => Navigator.of(context).pop(),
                           child: Text(
-                            'Sign Up',
+                            'Log in',
                             style: GoogleFonts.poppins(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
@@ -423,7 +405,7 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Logo + Brand row
+// Logo + Brand row (same as LoginScreen)
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _LogoBrand extends StatelessWidget {
@@ -456,73 +438,7 @@ class _LogoBrand extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Biometric / Face ID button
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _BiometricButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 56,
-      height: 56,
-      decoration: BoxDecoration(
-        color: AppColors.inputFill,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () {},
-          borderRadius: BorderRadius.circular(16),
-          child: const Icon(
-            Icons.face_retouching_natural_rounded,
-            color: AppColors.textSecondary,
-            size: 26,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Google button loading state
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _GoogleLoadingButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 52,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
-      ),
-      child: const Center(
-        child: SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(
-            strokeWidth: 2.0,
-            color: AppColors.primaryEmerald,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Error banner
+// Red error banner shown above form fields
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _ErrorBanner extends StatelessWidget {
@@ -561,12 +477,11 @@ class _ErrorBanner extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Background blob
+// Background blob (same pattern as LoginScreen)
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _Blob extends StatelessWidget {
   const _Blob({required this.size, required this.color});
-
   final double size;
   final Color color;
 

@@ -46,3 +46,17 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Firebase
+# firebase_options.dart contains client-side Firebase configuration.
+# It is normally safe to commit, so don't ignore it.
+
+# Firebase Admin SDK / private service-account credentials
+firebase-service-account.json
+*-firebase-adminsdk-*.json
+google-services-admin.json
+
+# Environment files / secrets
+.env
+.env.*
+!.env.example
