@@ -202,3 +202,26 @@ This project demonstrates:
 Flutter • Spring Boot • PostgreSQL
 
 > A modern FinTech portfolio project built for learning full-stack software engineering.
+
+---
+
+## License
+
+FinTrack is source-available for viewing and educational purposes.
+
+© 2026 Muhammad Umer Nadeem. All Rights Reserved.
+
+You may view and study the source code for educational purposes.
+
+You may not:
+
+- use FinTrack or its source code commercially;
+- sell or monetize the application or substantial portions of it;
+- redistribute the source code as your own;
+- publish a substantially similar copy as your own project;
+- submit this project or substantial portions of it as your own
+  academic/university project;
+- remove copyright or attribution notices.
+
+For permissions outside these terms, please contact the copyright
+holder.
