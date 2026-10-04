@@ -56,6 +56,11 @@ firebase-service-account.json
 *-firebase-adminsdk-*.json
 google-services-admin.json
 
+# Firebase configuration files
+lib/firebase_options.dart
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+
 # Environment files / secrets
 .env
 .env.*
