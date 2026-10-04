@@ -46,7 +46,7 @@ class FinTrackApp extends StatelessWidget {
 
 /// Listens to Firebase auth state and routes accordingly.
 ///
-///
+//
 /// Flow:
 ///   - Shows [SplashScreen] while waiting for the very first auth event.
 ///   - Once determined: authenticated → [HomeScreen], else → [LoginScreen].
