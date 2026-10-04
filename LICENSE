@@ -1,21 +1,134 @@
-MIT License
+FINTRACK SOURCE-AVAILABLE NON-COMMERCIAL LICENSE
 
 Copyright (c) 2026 Muhammad Umer Nadeem
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+All rights reserved.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. PURPOSE
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+The FinTrack source code is made publicly available for viewing,
+learning, educational, and research purposes. Making this repository
+publicly available does not grant general permission to use, copy,
+modify, distribute, publish, sell, or create derivative works from
+the source code.
+
+2. PERMITTED USE
+
+You are permitted to:
+
+- View and inspect the source code.
+- Study the source code for personal, educational, or research
+  purposes.
+- Run the application locally for personal and educational purposes.
+- Discuss the source code and its concepts for educational purposes.
+- Reference the project when providing commentary, reviews, or
+  educational discussion, provided that the source code itself is
+  not reproduced in substantial portions.
+
+3. PROHIBITED USE
+
+Without prior written permission from the copyright holder, you may
+NOT:
+
+- Use FinTrack or substantial portions of its source code for
+  commercial purposes.
+- Sell, rent, lease, sublicense, or otherwise monetize FinTrack or
+  substantial portions of its source code.
+- Redistribute or republish the source code, in whole or in
+  substantial part, as another repository, application, product,
+  package, template, or project.
+- Copy, modify, or create a derivative project based on substantial
+  portions of the source code and present it as an independent
+  project.
+- Rebrand, rename, or present FinTrack or a substantially derived
+  version of it as your own software.
+- Remove or alter copyright, attribution, or license notices.
+- Submit FinTrack or substantial portions of its source code as your
+  own academic assignment, university project, thesis, dissertation,
+  capstone project, portfolio project, or other assessed work.
+- Use substantial portions of the source code in another project
+  without prior written permission.
+- Claim authorship or ownership of FinTrack or substantial portions
+  of its source code.
+
+4. COMMERCIAL USE
+
+Commercial use includes, but is not limited to:
+
+- Selling the application or a substantially derived version.
+- Using the source code in a commercial product or service.
+- Monetizing the application or a substantially derived version.
+- Offering the application as a paid service.
+- Incorporating substantial portions of the source code into
+  software developed for a business or organization.
+
+Commercial use requires prior written permission from the copyright
+holder.
+
+5. MODIFICATIONS AND DERIVATIVE WORKS
+
+You may experiment with the source code locally for personal,
+educational, and research purposes.
+
+However, you may not publicly distribute, publish, sell, sublicense,
+or otherwise make available a modified version or derivative work
+containing substantial portions of the FinTrack source code without
+prior written permission from the copyright holder.
+
+6. ATTRIBUTION
+
+Where FinTrack is referenced in educational, research, technical,
+or public discussions, reasonable attribution to the original
+project and copyright holder is requested.
+
+Attribution does not grant permission to copy, redistribute,
+commercialize, or create derivative works from the source code.
+
+7. THIRD-PARTY COMPONENTS
+
+This license applies only to original source code and other
+materials owned by the FinTrack copyright holder.
+
+Third-party libraries, frameworks, packages, fonts, images, icons,
+and other components included in or used by the project remain
+subject to their respective licenses and terms.
+
+Nothing in this license changes or overrides the license of any
+third-party component.
+
+8. NO TRANSFER OF OWNERSHIP
+
+This license does not transfer ownership or copyright of FinTrack.
+All rights not expressly granted by this license are reserved by
+the copyright holder.
+
+9. TERMINATION
+
+Any permission granted under this license terminates automatically
+if you violate the terms of this license.
+
+Upon termination, you must cease the prohibited use and, where
+applicable, remove unauthorized copies or distributions of the
+source code.
+
+10. DISCLAIMER OF WARRANTY
+
+FINTRACK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+NON-INFRINGEMENT.
+
+IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM,
+DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF, OR INABILITY
+TO USE, FINTRACK OR ITS SOURCE CODE.
+
+11. CONTACT AND ADDITIONAL PERMISSIONS
+
+Requests for permissions not expressly granted by this license,
+including commercial use, redistribution, incorporation into another
+project, or other uses outside the permitted purposes, must be
+submitted to the copyright holder for written approval.
+
+Copyright (c) 2026 Muhammad Umer Nadeem
+
+All rights reserved.
