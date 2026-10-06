@@ -1,227 +1,78 @@
-# 💰 FinTrack
+# FinTrack
 
-### Personal Finance Management System
+FinTrack is a personal finance management application built as a full-stack software engineering project. It consists of a Flutter mobile application and a Spring Boot REST API backed by PostgreSQL.
 
-FinTrack is a full-stack personal finance management system that helps users track income, expenses, budgets, savings goals, and recurring payments through a modern Flutter mobile application backed by a secure Spring Boot REST API.
+## Overview
 
-Built as a Software Engineering & Mobile App Development project using **Flutter**, **Spring Boot**, **PostgreSQL**, and **JWT Authentication**.
+The project is designed to allow users to track income and expenses, monitor budgets, and visualize financial data. Development is in early stages: user authentication is complete in the mobile application, and the backend foundation is in place. Financial data features are not yet implemented in either component.
 
----
+## Architecture
 
-## 📱 Preview
-
-> Screenshots will be added after development.
-
-| Dashboard | Transactions | Analytics |
-|-----------|--------------|-----------|
-| 📷 | 📷 | 📷 |
-
----
-
-## ✨ Features
-
-### 🔐 Authentication
-- User Registration
-- Secure Login
-- JWT Authentication
-- Password Encryption
-- Persistent Login
-
-### 💳 Transactions
-- Add Income & Expenses
-- Edit & Delete Transactions
-- Categories
-- Payment Methods
-- Search & Filters
-- Transaction History
-
-### 📊 Financial Analytics
-- Expense Distribution (Donut Chart)
-- Monthly Spending Trend
-- Category Spending
-- Cash Flow Overview
-- Weekly & Monthly Insights
-
-### 🎯 Budget Management
-- Monthly Budgets
-- Budget Progress
-- Overspending Alerts
-- Budget Utilization
-
-### 💰 Savings Goals
-- Create Goals
-- Track Progress
-- Contribution History
-- Circular Progress Indicators
-
-### 🔄 Recurring Expenses
-- Monthly Bills
-- Subscription Tracking
-- Upcoming Payments
-- Reminder Notifications
-
----
-
-## 🏗️ System Architecture
-
-```text
-                Flutter Mobile App
-                       │
-                Riverpod + Dio
-                       │
-                REST API (HTTPS)
-                       │
-          Spring Boot + Spring Security
-                       │
-                 JWT Authentication
-                       │
-                PostgreSQL Database
+```
+Flutter Mobile Application
+           |
+     HTTP / REST API
+           |
+  Spring Boot Backend
+           |
+      PostgreSQL
 ```
 
----
+Authentication is handled by Firebase Authentication. The Spring Boot backend is designed to verify Firebase ID tokens on protected routes. Firebase token verification is not yet implemented in the backend.
 
-## 🛠️ Tech Stack
+## Technology Stack
 
-### Mobile
-- Flutter
-- Dart
-- Riverpod
-- Dio / Retrofit
-- Flutter Secure Storage
-- FL Chart
+| Component | Technology |
+|---|---|
+| Mobile application | Flutter 3.x / Dart 3.x |
+| Backend | Spring Boot 4.1.1 / Java 21 |
+| Database | PostgreSQL |
+| ORM | Spring Data JPA / Hibernate |
+| Security | Spring Security |
+| Authentication | Firebase Authentication |
+| Build tool (backend) | Maven |
 
-### Backend
-- Java 21
-- Spring Boot
-- Spring Security
-- JWT
-- Spring Data JPA
-- Maven
+## Repository Structure
 
-### Database
-- PostgreSQL
-
-### Tools
-- Git & GitHub
-- Postman
-- Figma / Stitch
-- Android Studio
-
----
-
-## 📂 Project Structure
-
-```text
-fintrack/
-│
-├── fintrack_app/          # Flutter Application
-│
-├── fintrack_backend/      # Spring Boot Backend
-│
-├── docs/                  # Screenshots & Documentation
-│
-├── README.md
-│
-└── docker-compose.yml     # Future deployment
+```
+system/
+├── fintrack_app/        # Flutter mobile application
+├── fintrack_backend/    # Spring Boot REST API
+├── LICENSE
+└── README.md
 ```
 
----
+The repository also contains a `design/` directory with UI reference files and a `documentation/` directory with project planning documents. These are not part of the deployable application.
 
-## 📱 Screens
+## Current Status
 
-- Splash Screen
-- Login / Register
-- Home Dashboard
-- Transactions
-- Add Transaction
-- Analytics
-- Budgets
-- Savings Goals
-- Recurring Expenses
-- Notifications
-- Profile
+**Flutter application:** Authentication is complete (email/password login, registration, Google Sign-In, password reset). The home screen exists as a placeholder. No financial data screens have been implemented.
 
----
+**Spring Boot backend:** Project foundation is in place with a working health endpoint. No application business logic, database schema, or API endpoints beyond the health check have been implemented.
 
-## 🗄️ Database Modules
+See each component's own README and `PROJECT_STATUS.md` for detailed current status.
 
-- Users
-- Categories
-- Transactions
-- Budgets
-- Savings Goals
-- Recurring Expenses
+## Getting Started
 
----
+### Flutter application
 
-## 🔑 API Modules
+See `fintrack_app/README.md` for setup and run instructions. Requires Flutter SDK and a Firebase project.
 
-| Module | Status |
-|---------|--------|
-| Authentication | ✅ |
-| Transactions | ✅ |
-| Budgets | ✅ |
-| Savings Goals | ✅ |
-| Analytics | ✅ |
-| Recurring Expenses | ✅ |
+### Spring Boot backend
 
----
+See `fintrack_backend/README.md` for setup and run instructions. Requires Java 21, Maven, and a running PostgreSQL instance.
 
-## 🎯 Learning Objectives
+## Documentation
 
-This project demonstrates:
+Each component contains a `PROJECT_STATUS.md` file that serves as the primary developer reference:
 
-- Full-stack Mobile Development
-- Clean Flutter Architecture
-- REST API Development
-- Spring Security & JWT
-- PostgreSQL Database Design
-- Financial Data Visualization
-- State Management with Riverpod
-- Client-Server Architecture
-
----
-
-## 🚀 Future Improvements
-
-- AI Spending Insights
-- Receipt OCR
-- PDF & CSV Export
-- Multi-Currency Support
-- Cloud Backup
-- Family Shared Budgets
-- Dark Mode
-- Web Dashboard
-
----
-
-## 👨‍💻 Author
-
-**Muhammad Umer Nadeem**
-
-Flutter • Spring Boot • PostgreSQL
-
-> A modern FinTech portfolio project built for learning full-stack software engineering.
-
----
+- `fintrack_app/PROJECT_STATUS.md` — Flutter application status, architecture decisions, known issues, and development plan
+- `fintrack_backend/PROJECT_STATUS.md` — Backend status, package structure, configuration reference, and milestone plan
 
 ## License
 
-FinTrack is source-available for viewing and educational purposes.
+FinTrack is source-available under a non-commercial license. You may view and study the source code for educational purposes. Commercial use, redistribution, and submission as academic work are not permitted without written permission.
 
-© 2026 Muhammad Umer Nadeem. All Rights Reserved.
+See `LICENSE` for the full terms.
 
-You may view and study the source code for educational purposes.
-
-You may not:
-
-- use FinTrack or its source code commercially;
-- sell or monetize the application or substantial portions of it;
-- redistribute the source code as your own;
-- publish a substantially similar copy as your own project;
-- submit this project or substantial portions of it as your own
-  academic/university project;
-- remove copyright or attribution notices.
-
-For permissions outside these terms, please contact the copyright
-holder.
+Copyright (c) 2026 Muhammad Umer Nadeem. All rights reserved.
