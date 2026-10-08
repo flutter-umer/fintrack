@@ -3,8 +3,8 @@
 
 > **Document type:** Single source of truth for the backend application.
 > **Audience:** Developer, future contributors, AI coding assistants.
-> **Last updated:** 2026-10-05
-> **⚠️ Never copy credentials, API keys, service-account files, or secrets into this file.**
+> **Last updated:** 2026-10-08
+> **NOTE:** Never copy credentials, API keys, service-account files, or secrets into this file.
 
 ---
 
@@ -330,26 +330,32 @@ All endpoints are prefixed `/api/v1/`. Breaking changes get a `/api/v2/` prefix.
 
 ## 9. Current Status
 
-### ✅ COMPLETED
+### COMPLETED
 
-| Component | Status | Verified |
-|---|---|---|
-| Maven project (Spring Boot 4.1.1, Java 21) | ✅ Complete | `mvn test` BUILD SUCCESS |
-| `pom.xml` — correct Boot 4.x deps | ✅ Complete | Confirmed on Maven Central |
-| `application.properties` — credentials via env vars | ✅ Complete | No secrets in source |
-| `FintrackBackendApplication` entry point | ✅ Complete | Starts in ~4.6s |
-| `SecurityConfig` — stateless, health public | ✅ Complete | Tested via `@WebMvcTest` |
-| `HealthController` — GET /api/v1/health | ✅ Complete | Live endpoint verified |
-| `HealthResponse` Java record DTO | ✅ Complete | |
-| `GlobalExceptionHandler` | ✅ Complete | |
-| Package structure (8 packages) | ✅ Complete | |
-| `HealthControllerTest` (`@WebMvcTest` Boot 4.x) | ✅ Complete | 1 test, 0 failures |
-| **Maven test** | ✅ **BUILD SUCCESS** | `Tests run: 1, Failures: 0, Errors: 0` |
-| **Live health endpoint** | ✅ **Verified** | `{"status":"UP","application":"FinTrack Backend"}` |
-| Java 21.0.12 | ✅ Confirmed | `C:\SDKs\jdk-21.0.12\bin\java.exe -version` |
-| Spring Boot 4.1.1 banner | ✅ Confirmed | Shown in startup log |
+| Component | Verified |
+|---|---|
+| Maven project (Spring Boot 4.1.1, Java 21) | `mvn test` BUILD SUCCESS |
+| `pom.xml` — correct Boot 4.x deps | Confirmed on Maven Central |
+| `application.properties` — credentials via env vars, no hard-coded secrets | Verified |
+| `application.properties.example` — placeholder credentials only | Created 2026-10-08 |
+| `application.properties` ignored by Git | Confirmed via .gitignore |
+| `spring.jpa.open-in-view=false` | Warning suppressed |
+| `spring.jpa.hibernate.ddl-auto=none` | Correct for no-entity baseline |
+| `spring.jpa.database-platform` (PostgreSQLDialect) | Required by Hibernate 7 |
+| `spring.autoconfigure.exclude` for UserDetailsServiceAutoConfiguration | In application.properties |
+| `FintrackBackendApplication` — Javadoc, no import dependency on internal Boot class | |
+| `SecurityConfig` — stateless, health public, all else authenticated | Tested via `@WebMvcTest` |
+| `HealthController` — GET /api/v1/health | Live endpoint verified |
+| `HealthResponse` Java record DTO | |
+| `GlobalExceptionHandler` | |
+| Package structure (8 packages scaffolded) | |
+| `HealthControllerTest` (`@WebMvcTest` Boot 4.x) | 1 test, 0 failures |
+| Maven test | `Tests run: 1, Failures: 0, Errors: 0, Skipped: 0` |
+| Live health endpoint | `{"status":"UP","application":"FinTrack Backend"}` |
+| Java 21.0.12 | `C:\SDKs\jdk-21.0.12\bin\java.exe -version` |
+| Spring Boot 4.1.1 | Confirmed in test and startup logs |
 
-### 🔴 NOT STARTED
+### NOT STARTED
 
 | Feature | Milestone |
 |---|---|
@@ -357,13 +363,13 @@ All endpoints are prefixed `/api/v1/`. Breaking changes get a `/api/v2/` prefix.
 | `FirebaseTokenFilter` | 2 |
 | `FirebaseConfig` (Admin SDK init) | 2 |
 | User profile entity + endpoint | 3 |
-| PostgreSQL schema (first migration) | 3 |
+| PostgreSQL schema (Flyway or Liquibase) | 3 |
 | Transaction entity + CRUD API | 4 |
 | Dashboard summary endpoint | 5 |
 | Category budgets | 6 |
 | Savings goals | 6 |
 | Analytics endpoints | 7 |
-| Flutter ↔ Spring Boot integration | (cross-cutting) |
+| Flutter to backend integration | (cross-cutting) |
 | CORS configuration | Before Flutter connects |
 | Production deployment | Future |
 
@@ -517,3 +523,33 @@ Do NOT use `spring.jackson.serialization.*` properties — they don't bind corre
 
 **Java:**
 - `C:\SDKs\jdk-21.0.12\bin\java.exe -version` confirmed: `java version "21.0.12" 2026-07-21 LTS`
+
+### 2026-10-08 — Milestone 1: Backend Foundation Review and Cleanup
+
+**Context:** Backend foundation review task. Previous session was interrupted before producing its final report.
+
+**Files inspected (no changes needed):** `pom.xml`, `SecurityConfig.java`, `HealthController.java`, `HealthResponse.java`, `GlobalExceptionHandler.java`, `HealthControllerTest`, `.gitignore` — all confirmed correct.
+
+**Files modified:**
+
+| File | Change |
+|---|---|
+| `application.properties` | Removed hard-coded `12345` password fallback; replaced with `changeme_local` |
+| `application.properties` | Removed redundant `spring.datasource.driver-class-name` (auto-detected) |
+| `application.properties` | Changed `ddl-auto` from `update` to `none` (no entities exist) |
+| `application.properties` | Added `spring.jpa.open-in-view=false` |
+| `application.properties` | Added `spring.autoconfigure.exclude` for `UserDetailsServiceAutoConfiguration` |
+| `application.properties` | Restored `spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect` (required by Hibernate 7 without live JDBC) |
+| `application.properties.example` | Created — placeholder credentials only |
+| `FintrackBackendApplication.java` | Added Javadoc |
+| `security/package-info.java` | Removed emoji from Javadoc |
+| `PROJECT_STATUS.md` | Date updated, emoji removed, status table updated |
+
+**Key finding — Hibernate 7 dialect:** Removing `spring.jpa.database-platform` caused a startup failure (`Unable to determine Dialect without JDBC metadata`). In Hibernate 7 (bundled with Boot 4.1.1) the explicit dialect is required when starting without a live JDBC connection. Property was restored.
+
+**Key finding — UserDetailsServiceAutoConfiguration:** In Spring Boot 4.1.1 the class is at `org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration`. The `spring.autoconfigure.exclude` property is used rather than the `@SpringBootApplication(exclude=...)` annotation to avoid importing a Boot-internal class whose package may relocate.
+
+**Verified outcomes:**
+- Java: `C:\SDKs\jdk-21.0.12\bin\java.exe -version` → `java version "21.0.12" 2026-07-21 LTS`
+- `mvn test` → **BUILD SUCCESS** — `Tests run: 1, Failures: 0, Errors: 0, Skipped: 0` (Spring Boot 4.1.1, Java 21.0.12)
+- `GET http://localhost:8080/api/v1/health` → `{"status":"UP","application":"FinTrack Backend"}`

@@ -88,17 +88,19 @@ All non-2xx responses return a consistent JSON envelope:
 
 The backend is configured to connect to a PostgreSQL database. No schema exists yet — entity classes and database migrations will be introduced in a future milestone.
 
-The JPA `ddl-auto` setting is currently set to `update`. This will be replaced with a proper migration tool (Flyway or Liquibase) when the first entities are added.
+The JPA `ddl-auto` setting is currently `none`. Hibernate will not attempt to create or modify the schema. This will be replaced with Flyway or Liquibase when the first entities are added.
 
 ## Configuration
 
 The application reads database credentials from environment variables at startup. Do not place real credentials in `application.properties`.
 
+Copy `src/main/resources/application.properties.example` to `application.properties` and fill in your local values. The `application.properties` file is git-ignored and must not be committed.
+
 | Environment Variable | Default (placeholder) | Description |
 |---|---|---|
 | `SPRING_DATASOURCE_URL` | `jdbc:postgresql://localhost:5432/fintrack` | JDBC connection URL |
 | `SPRING_DATASOURCE_USERNAME` | `fintrack_user` | Database username |
-| `SPRING_DATASOURCE_PASSWORD` | _(placeholder)_ | Database password |
+| `SPRING_DATASOURCE_PASSWORD` | _(set locally)_ | Database password |
 
 The application listens on port `8080` by default.
 
