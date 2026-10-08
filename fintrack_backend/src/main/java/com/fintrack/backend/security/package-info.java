@@ -19,7 +19,7 @@
  * &lt;/dependency&gt;
  * </pre>
  *
- * <p>⚠️ NEVER place Firebase service-account JSON content inside source files.
+ * <p>NOTE: NEVER place Firebase service-account JSON content inside source files.
  * Provide the service account path via the {@code GOOGLE_APPLICATION_CREDENTIALS}
  * environment variable or equivalent secrets mechanism.
  */
