@@ -1,23 +1,20 @@
 /**
  * Security components for FinTrack Backend.
  *
- * <p>Planned contents (Milestone 2 — Firebase Authentication):
+ * <p>Contents (Milestone 2 — Firebase Authentication — implemented):
  * <ul>
- *   <li>{@code FirebaseTokenFilter} — validates the {@code Authorization: Bearer <idToken>}
- *       header on every protected request by calling Firebase Admin SDK's
- *       {@code FirebaseAuth.verifyIdToken()}.</li>
- *   <li>{@code FirebasePrincipal} — lightweight principal holding the Firebase UID,
- *       email, and any custom claims extracted from the verified token.</li>
+ *   <li>{@link com.fintrack.backend.security.FirebaseTokenVerifier} — functional interface
+ *       over {@code FirebaseAuth.verifyIdToken()}, extracted for testability.</li>
+ *   <li>{@link com.fintrack.backend.security.FirebaseTokenFilter} — validates the
+ *       {@code Authorization: Bearer <idToken>} header on every request and populates
+ *       the Spring Security context on success.</li>
+ *   <li>{@link com.fintrack.backend.security.FirebasePrincipal} — lightweight record
+ *       holding the Firebase UID and email extracted from a verified token.</li>
  * </ul>
  *
- * <p>Firebase Admin SDK is NOT a dependency yet. Add it in Milestone 2:
- * <pre>
- * &lt;dependency&gt;
- *   &lt;groupId&gt;com.google.firebase&lt;/groupId&gt;
- *   &lt;artifactId&gt;firebase-admin&lt;/artifactId&gt;
- *   &lt;version&gt;9.x&lt;/version&gt;
- * &lt;/dependency&gt;
- * </pre>
+ * <p>Firebase initialization lives in
+ * {@link com.fintrack.backend.config.FirebaseConfig}. Credentials are supplied via
+ * the {@code GOOGLE_APPLICATION_CREDENTIALS} environment variable.
  *
  * <p>NOTE: NEVER place Firebase service-account JSON content inside source files.
  * Provide the service account path via the {@code GOOGLE_APPLICATION_CREDENTIALS}

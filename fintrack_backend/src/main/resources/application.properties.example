@@ -33,10 +33,16 @@ spring.jpa.hibernate.ddl-auto=none
 spring.jpa.open-in-view=false
 spring.jpa.show-sql=false
 
-# Firebase Admin SDK (Milestone 2 — not yet implemented)
-# When implemented, point this to your service-account JSON file.
-# NEVER commit the service-account file to source control.
-# google.application.credentials=${GOOGLE_APPLICATION_CREDENTIALS:}
+# Firebase Admin SDK (Milestone 2 — implemented)
+# Set GOOGLE_APPLICATION_CREDENTIALS as an environment variable pointing to a
+# service-account JSON file downloaded from the Firebase Console.
+# NEVER commit the service-account JSON file to source control.
+# NEVER put the actual file path or any credential value in this file.
+#
+# Example (set in shell or .env before running the app):
+#   export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/service-account.json
+#
+# If this variable is not set, the app starts but protected routes return 401.
 
 # Logging
 logging.level.root=WARN

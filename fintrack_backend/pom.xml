@@ -50,6 +50,16 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
+		<!-- ── Firebase Admin SDK ─────────────────────────────────────────── -->
+		<!-- Used for Firebase ID token verification (Milestone 2).           -->
+		<!-- Credentials are supplied via GOOGLE_APPLICATION_CREDENTIALS env  -->
+		<!-- var — never hardcode service-account JSON in source.             -->
+		<dependency>
+			<groupId>com.google.firebase</groupId>
+			<artifactId>firebase-admin</artifactId>
+			<version>9.11.0</version>
+		</dependency>
+
 		<!-- ── Test ─────────────────────────────────────────────────────────── -->
 		<!-- JUnit 5 + Mockito core -->
 		<dependency>

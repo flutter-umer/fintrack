@@ -42,3 +42,10 @@ src/main/resources/application.properties
 src/main/resources/application-local.properties
 src/main/resources/application-local.yml
 src/main/resources/application-local.yaml
+
+### Firebase service-account credentials ###
+# Never commit service-account JSON files.
+# Set GOOGLE_APPLICATION_CREDENTIALS to the path of a local file instead.
+*service-account*.json
+*serviceAccount*.json
+firebase-adminsdk*.json
